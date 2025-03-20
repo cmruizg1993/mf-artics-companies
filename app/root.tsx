@@ -1,3 +1,5 @@
+/// <reference path="../types/global.d.ts" />
+import { defineCustomElements } from '@cmruizg1993/artics-ds/loader';
 import {
   isRouteErrorResponse,
   Links,
@@ -9,6 +11,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { useEffect } from "react";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -42,7 +45,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  useEffect(() => {
+    import('@cmruizg1993/artics-ds/loader').then(({ defineCustomElements }) => {
+      defineCustomElements(window);
+    });
+  }, []);
+  return (
+    <>
+      <Outlet />
+      <artics-button>Hola</artics-button>
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
